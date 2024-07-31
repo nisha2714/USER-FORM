@@ -108,35 +108,94 @@
     <script>
         $(document).ready(function () {
             $('#saveButton').click(function () {
-                const formData = {
-                    firstName: $('#firstName').val(),
-                    lastName: $('#lastName').val(),
-                    mobileNo: $('#mobileNo').val(),
-                    emailId: $('#emailId').val(),
-                    address: {
-                        street: $('#street').val(),
-                        city: $('#city').val(),
-                        state: $('#state').val(),
-                        country: $('#country').val()
-                    },
-                    loginId: $('#loginId').val(),
-                    password: $('#password').val()
-                };
+                let valid = true;
+                let formData = {};
 
-                $.ajax({
-                    url: '/users', // API URL
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
-                    success: function (response) {
-                        alert('Data saved successfully!');
-                        // Redirect to view-users.html after successful save
-                        window.location.href = 'view-users.html';
-                    },
-                    error: function (xhr, status, error) {
-                        alert('Error saving data: ' + error);
-                    }
-                });
+                // Validate First Name
+                const firstName = $('#firstName').val();
+                if (!firstName) {
+                    alert('First Name is required.');
+                    valid = false;
+                } else {
+                    formData.firstName = firstName;
+                }
+
+                // Validate Last Name
+                const lastName = $('#lastName').val();
+                if (!lastName) {
+                    alert('Last Name is required.');
+                    valid = false;
+                } else {
+                    formData.lastName = lastName;
+                }
+
+                // Validate Mobile No
+                const mobileNo = $('#mobileNo').val();
+                const mobileNoPattern = /^\d{10}$/;
+                if (!mobileNoPattern.test(mobileNo)) {
+                    alert('Mobile No must be 10 digits.');
+                    valid = false;
+                } else {
+                    formData.mobileNo = mobileNo;
+                }
+
+                // Validate Email ID
+                const emailId = $('#emailId').val();
+                if (!emailId) {
+                    alert('Email ID is required.');
+                    valid = false;
+                } else {
+                    formData.emailId = emailId;
+                }
+
+                // Validate Address
+                const street = $('#street').val();
+                const city = $('#city').val();
+                const state = $('#state').val();
+                const country = $('#country').val();
+                if (!street || !city || !state || !country) {
+                    alert('All address fields are required.');
+                    valid = false;
+                } else {
+                    formData.address = { street, city, state, country };
+                }
+
+                // Validate Login ID
+                const loginId = $('#loginId').val();
+                const loginIdPattern = /^[a-zA-Z0-9]{8}$/;
+                if (!loginIdPattern.test(loginId)) {
+                    alert('Login ID must be 8 alphanumeric characters.');
+                    valid = false;
+                } else {
+                    formData.loginId = loginId;
+                }
+
+                // Validate Password
+                const password = $('#password').val();
+                const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[a-zA-Z\d\W]{6,}$/;
+                if (!passwordPattern.test(password)) {
+                    alert('Password must be at least 6 characters long, with 1 uppercase letter, 1 lowercase letter, and 1 special character.');
+                    valid = false;
+                } else {
+                    formData.password = password;
+                }
+
+                // If form is valid, submit data
+                if (valid) {
+                    $.ajax({
+                        url: '/users', // API URL
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(formData),
+                        success: function (response) {
+                            alert('Data saved successfully!');
+                            window.location.href = 'view-users.html'; // Redirect to view users page
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error saving data: ' + error);
+                        }
+                    });
+                }
             });
         });
     </script>
