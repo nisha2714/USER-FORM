@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-
         .form-container {
             max-width: 600px;
             margin: auto;
@@ -18,22 +16,18 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 5px;
         }
-
         .form-group input {
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
         }
-
         .form-group button {
             padding: 10px 15px;
             background-color: #28a745;
@@ -42,13 +36,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         .form-group button:hover {
             background-color: #218838;
         }
     </style>
 </head>
-
 <body>
 
     <div class="form-container">
@@ -88,15 +80,11 @@
             </div>
             <div class="form-group">
                 <label for="loginId">Login ID:</label>
-                <input type="text" id="loginId" name="loginId" pattern="[a-zA-Z0-9]{8}"
-                    title="8 alphanumeric characters required" required>
+                <input type="text" id="loginId" name="loginId" pattern="[a-zA-Z0-9]{8}" title="8 alphanumeric characters required" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password"
-                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[a-zA-Z\d\W]{6,}"
-                    title="Minimum 6 characters, 1 uppercase letter, 1 lowercase letter, and 1 special character required"
-                    required>
+                <input type="password" id="password" name="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[a-zA-Z\d\W]{6,}" title="Minimum 6 characters, 1 uppercase letter, 1 lowercase letter, and 1 special character required" required>
             </div>
             <div class="form-group">
                 <button type="button" id="saveButton">Save</button>
@@ -106,24 +94,24 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#saveButton').click(function () {
+        $(document).ready(function() {
+            $('#saveButton').click(function() {
                 let valid = true;
                 let formData = {};
 
                 // Validate First Name
-                const firstName = $('#firstName').val();
-                if (!firstName) {
-                    alert('First Name is required.');
+                const firstName = $('#firstName').val().trim();
+                if (!firstName || firstName.length < 2 || firstName.length > 30) {
+                    alert('First Name must be between 2 and 30 characters.');
                     valid = false;
                 } else {
                     formData.firstName = firstName;
                 }
 
                 // Validate Last Name
-                const lastName = $('#lastName').val();
-                if (!lastName) {
-                    alert('Last Name is required.');
+                const lastName = $('#lastName').val().trim();
+                if (!lastName || lastName.length < 2 || lastName.length > 30) {
+                    alert('Last Name must be between 2 and 30 characters.');
                     valid = false;
                 } else {
                     formData.lastName = lastName;
@@ -133,7 +121,7 @@
                 const mobileNo = $('#mobileNo').val();
                 const mobileNoPattern = /^\d{10}$/;
                 if (!mobileNoPattern.test(mobileNo)) {
-                    alert('Mobile No must be 10 digits.');
+                    alert('Mobile No must be exactly 10 digits.');
                     valid = false;
                 } else {
                     formData.mobileNo = mobileNo;
@@ -149,12 +137,16 @@
                 }
 
                 // Validate Address
-                const street = $('#street').val();
-                const city = $('#city').val();
-                const state = $('#state').val();
-                const country = $('#country').val();
-                if (!street || !city || !state || !country) {
-                    alert('All address fields are required.');
+                const street = $('#street').val().trim();
+                const city = $('#city').val().trim();
+                const state = $('#state').val().trim();
+                const country = $('#country').val().trim();
+                if (!street || !city || !state || !country ||
+                    street.length < 2 || street.length > 50 ||
+                    city.length < 2 || city.length > 50 ||
+                    state.length < 2 || state.length > 50 ||
+                    country.length < 2 || country.length > 50) {
+                    alert('Address fields must be between 2 and 50 characters.');
                     valid = false;
                 } else {
                     formData.address = { street, city, state, country };
@@ -187,11 +179,11 @@
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(formData),
-                        success: function (response) {
+                        success: function(response) {
                             alert('Data saved successfully!');
                             window.location.href = 'view-users.html'; // Redirect to view users page
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             alert('Error saving data: ' + error);
                         }
                     });
@@ -201,5 +193,5 @@
     </script>
 
 </body>
-
 </html>
+
